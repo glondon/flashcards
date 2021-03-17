@@ -30,14 +30,17 @@ if [[ ! "${categories[@]}" =~ "${categoryId}" ]]; then
 	echo "Invalid categoryId"
 	exit 1
 fi
-qCards="SELECT front, back FROM cards WHERE category_id = ${categoryId} ORDER BY RAND()"
+qCards="SELECT REPLACE(front, '\r\n\r\n', ' '), REPLACE(back, '\r\n\r\n', ' ') FROM cards WHERE category_id = ${categoryId} ORDER BY RAND()"
 exec 3<&0
-while read -a row
+while IFS=$'\t' read -a row
 do
 	echo "${row[0]}"
+	echo "---------------------------------"
 	printf 'Press <enter> to continue..' >&2
 	read keypress <&3
+	echo "---------------------------------"
 	echo "${row[1]}"
+	echo "---------------------------------"
 done < <(echo $qCards | $MYSQL)
 exec 3<&-
-
+echo -e "\nFINISHED"
