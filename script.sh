@@ -4,7 +4,7 @@ qCourses="SELECT id, course FROM courses;"
 courses=()
 echo -e "\nSELECT A COURSE ID TO STUDY\n"
 echo "ID COURSE"
-while read -a row
+while IFS=$'\t' read -a row
 do
 	echo "${row[0]}  ${row[1]}"
 	courses+=(${row[0]})
@@ -20,7 +20,7 @@ echo -e "\nSELECT A CATEGORY ID TO STUDY\n"
 echo "ID CATEGORY"
 categories=()
 qCategoryIds="SELECT id, category FROM categories WHERE course_id = ${courseId};"
-while read -a row
+while IFS=$'\t' read -a row
 do
 	echo "${row[0]}  ${row[1]}"
 	categories+=(${row[0]})
